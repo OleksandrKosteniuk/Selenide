@@ -1,14 +1,13 @@
 package utils;
 
+import driver.DriverManager;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static driver.SingletonDriver.getDriver;
-
 public class WebDriverWaiter {
-
+    
     protected WebDriverWait wait;
 
-    public WebDriverWaiter() {
-        wait = new WebDriverWait(getDriver(), 5);
+    public WebDriverWaiter(){
+        wait = new WebDriverWait(DriverManager.getDriver(),20);        
     }
 }
