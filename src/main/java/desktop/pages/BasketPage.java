@@ -32,13 +32,7 @@ public class BasketPage extends AbstractFragment {
         return findElement(TOTAL_IN_THE_ORDER_SUMMARY).getText();
     }
     
-    
-    public void clickOnTheSearchButton(){
+    public void clickOnTheCheckoutButton(){
         findElement(CHECKOUT_BUTTON).click();
     }
-
-        public boolean doesSummaryComponentContainTheExpectedValues(Map<String,String> expected)
-
-
-
 }

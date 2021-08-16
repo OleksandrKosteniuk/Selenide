@@ -8,9 +8,7 @@ import desktop.pages.HomePage;
 import desktop.pages.SearchResultPage;
 import desktop.pages.BasketPage;
 import driver.DriverManager;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -98,17 +96,17 @@ public class ExampleSteps extends AbstractPage {
 
     @When("Basket order summary is as following:")
     public void basketOrderSummaryIsAsFollowing(Map<String,String> expectedValuesInTheOrderSummaryComponent) {
-        assertThat(expectedValuesInTheOrderSummaryComponent.get(basketPage.getDeliveryCostKeyOfTheSummaryComponent()).compareToIgnoreCase(basketPage.getValueByDeliveryCostKeyOfTheSummaryComponent()))
+        assertThat(expectedValuesInTheOrderSummaryComponent.get(basketPage.getDeliveryCostKeyOfTheSummaryComponent()).contentEquals(basketPage.getValueByDeliveryCostKeyOfTheSummaryComponent()))
                 .overridingErrorMessage("Delivery cost does not equal to expected value")
                 .isTrue();
-        expectedValuesInTheOrderSummaryComponent.get(basketPage.getTotalKeyOfTheSummaryComponent()).compareToIgnoreCase(basketPage.getValueByTotalKeyOfTheSummaryComponent())
+        assertThat(expectedValuesInTheOrderSummaryComponent.get(basketPage.getTotalKeyOfTheSummaryComponent()).contentEquals(basketPage.getValueByTotalKeyOfTheSummaryComponent()))
                 .overridingErrorMessage("Total does not equal to expected value")
                 .isTrue();
     }
 
     @When("I click Checkout button on Basket page")
     public void clickONTheCheckoutButtonOnTheBasketPage() {
-        basketPage.clickOnTheSearchButton();
+        basketPage.clickOnTheCheckoutButton();
     }
 
     @When("I am redirected to the Checkout page")
@@ -126,6 +124,7 @@ public class ExampleSteps extends AbstractPage {
 
     @When("the following validation error messages are displayed on Delivery Address form:")
     public boolean areTheFollowingErrorMessagesDisplayedOnDeliveryAddressForm(Map<String,String> expectedErrorMessagesOnTheDeliveryAddressForm) {
+        return true;
     }
 
     @When("the following validation error messages are displayed on {string} form:")
