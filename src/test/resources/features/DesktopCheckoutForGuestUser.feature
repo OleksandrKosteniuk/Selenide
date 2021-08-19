@@ -51,9 +51,6 @@ Feature: Desktop Checkout for Guest User
       | John      | Ukraine          | Random address 1 | Random address 2 | Kyiv      | Random State | 12345    |
     Then there is no validation error messages displayed on Delivery Address form
     When I enter my card details
-      | Card Type    | Visa             |
-      | Name On Card | RandomName       |
-      | cardNumber   | 4111111111111111 |
-      | Expiry Year  | 2022             |
-      | Expiry Month | 03               |
-      | Cvv          | 123              |
+      | cardNumber         | 4111111111111111 |
+      | Expiry Month/Year  | 032022           |
+      | Cvv                | 123              |

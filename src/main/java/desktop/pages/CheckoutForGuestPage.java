@@ -4,8 +4,11 @@ import abstractClasses.fragment.AbstractFragment;
 import driver.DriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 
 import java.util.Map;
+
+import static utils.WebDriverTool.*;
 
 public class CheckoutForGuestPage extends AbstractFragment {
     private static final String CHECKOUT_FOR_GUEST_PAGE_URL = "https://www.bookdepository.com/payment";
@@ -82,13 +85,14 @@ public class CheckoutForGuestPage extends AbstractFragment {
     private static final String CARD_TYPE_OF_THE_PAYMENT_AREA_KEY= "Card Type";
     private static final String NAME_ON_CARD_OF_THE_PAYMENT_AREA_KEY= "Name On Card";
     private static final String CARD_NUMBER_OF_THE_PAYMENT_AREA_KEY= "cardNumber";
-    private static final String EXPIRY_YEAR_OF_THE_PAYMENT_AREA_KEY= "Expiry Year";
-    private static final String EXPIRY_MONTH_OF_THE_PAYMENT_AREA_KEY= "Expiry Month ";
+    private static final String EXPIRY_MONTH_YEAR_OF_THE_PAYMENT_AREA_KEY= "Expiry Month/Year";
     private static final String CVV_OF_THE_PAYMENT_AREA_KEY= "Cvv";
-
-        
     
-
+    
+    //IFrames
+    private static final By CARD_NUMBER_IFRAME = By.xpath("//*[@name='braintree-hosted-field-number']");
+    private static final By EXPIRY_DATE_IFRAME = By.xpath("//*[@id='braintree-hosted-field-expirationDate']");
+    private static final By CVV_IFRAME= By.xpath("//*[@name='braintree-hosted-field-cvv']");
     
     public String getPageUrl() {
         return CHECKOUT_FOR_GUEST_PAGE_URL;
@@ -201,21 +205,16 @@ public class CheckoutForGuestPage extends AbstractFragment {
     }
 
     public void fillInCardDetailsInThePaymentArea(Map<String,String> creditCardData){
-        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
-
-
-        js.executeScript("document.getElementById('credit-card-number').value = '4111111111111111';");
-        js.executeScript("document.getElementById('expiration').value = '032030';");
-        js.executeScript("document.getElementById('credit-card-number').value = '123';");
-        
-//        
-//        js.executeScript("document.getElementsByClassName('checkout-btn btn optimizely-variation-1')[1].click()");
-//        
-//        findElement(CARD_NUMBER_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(CARD_NUMBER_OF_THE_PAYMENT_AREA_KEY));
-//        findElement(EXPIRY_DATE_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(EXPIRY_MONTH_OF_THE_PAYMENT_AREA_KEY));
-//        findElement(EXPIRY_DATE_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(EXPIRY_YEAR_OF_THE_PAYMENT_AREA_KEY));
-//        findElement(CVV_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(CVV_OF_THE_PAYMENT_AREA_KEY));
-        findElement(COUNTRY_STATE_INPUT_FIELD).click();
+        switchToParticularIframe(findElement(CARD_NUMBER_IFRAME));
+        findElement(CARD_NUMBER_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(CARD_NUMBER_OF_THE_PAYMENT_AREA_KEY));
+        //setElementValueByJs(findElement(CARD_NUMBER_OF_THE_PAYMENT_AREA), creditCardData.get(CARD_NUMBER_OF_THE_PAYMENT_AREA_KEY));
+        switchToDefaultContentFromIframe();
+        switchToParticularIframe(findElement(EXPIRY_DATE_IFRAME));
+        findElement(EXPIRY_DATE_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(EXPIRY_MONTH_YEAR_OF_THE_PAYMENT_AREA_KEY));
+        //setElementValueByJs(findElement(EXPIRY_DATE_OF_THE_PAYMENT_AREA), creditCardData.get(EXPIRY_MONTH_YEAR_OF_THE_PAYMENT_AREA_KEY));
+        switchToDefaultContentFromIframe();
+        switchToParticularIframe(findElement(CVV_IFRAME));
+        findElement(CVV_OF_THE_PAYMENT_AREA).sendKeys(creditCardData.get(CVV_OF_THE_PAYMENT_AREA_KEY));
+        //setElementValueByJs(findElement(CVV_OF_THE_PAYMENT_AREA), creditCardData.get(CVV_OF_THE_PAYMENT_AREA_KEY));
     }
-    
 }

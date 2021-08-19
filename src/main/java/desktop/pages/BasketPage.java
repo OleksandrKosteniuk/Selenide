@@ -5,6 +5,9 @@ import driver.DriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 
+import static utils.WebDriverTool.clickElementByJs;
+import static utils.WebDriverTool.javaScriptExecutor;
+
 public class BasketPage extends AbstractFragment {
     
     //Page Url
@@ -15,7 +18,7 @@ public class BasketPage extends AbstractFragment {
     private static final By TOTAL_IN_THE_ORDER_SUMMARY = By.xpath("//*[@class='total']/dd");
     
     //Buttons
-    private static final By CHECKOUT_BUTTON = By.xpath("(//*[@class='checkout-btn btn optimizely-control'])[1]");
+    private static final By CHECKOUT_BUTTON = By.xpath("//div[@class='basketHeaderButtons']//a[contains(@class,'optimizely-variation-1')]");
     
     //Keys for Summary component
     private static final String DELIVERY_COST_TITLE_IN_THE_ORDER_SUMMARY = "Delivery cost";
@@ -42,7 +45,6 @@ public class BasketPage extends AbstractFragment {
     }
     
     public void clickOnTheCheckoutButton(){
-        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
-        js.executeScript("document.getElementsByClassName('checkout-btn btn optimizely-variation-1')[1].click()");
+        clickElementByJs(findElement(CHECKOUT_BUTTON));
     }
 }
