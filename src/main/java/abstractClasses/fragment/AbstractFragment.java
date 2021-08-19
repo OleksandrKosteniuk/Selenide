@@ -27,19 +27,19 @@ public abstract class AbstractFragment extends WebDriverWaiter {
         return rootElement;
     }
     
-    public Select newSelect (By by){
+    private Select newSelect (By by){
         return new Select(DriverManager.getDriver().findElement(by));
     } 
     
-    public void selectByVisibleText(By by, String text){
+    protected void selectByVisibleText(By by, String text){
         newSelect(by).selectByVisibleText(text);
     }
 
-    public WebElement findElement(By by){
+    protected WebElement findElement(By by){
         return DriverManager.getDriver().findElement(by);
     }
 
-    public List<WebElement> findElements(By by){
+    protected List<WebElement> findElements(By by){
         return DriverManager.getDriver().findElements(by);
     }
     

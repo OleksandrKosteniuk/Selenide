@@ -14,14 +14,26 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SearchResultPage extends AbstractFragment {
+    
+    //page URL
     private static final String SEARCH_RESULT_PAGE_URL = "https://www.bookdepository.com/search";
+    
+    //General Book title
     private static final By BOOK_TITLE = By.xpath("//*[@class='title']");
+    
+    //Add to Basket Button
     private static final By ADD_TO_BASKET_BUTTON = By.xpath("//*[@class='btn btn-sm btn-primary add-to-basket']");
+    private static final By ADD_TO_BASKET_BELOW_THINKING_IN_JAVA_BUTTON = By.xpath("//div[@class='book-item'][contains(.,'Thinking in Java')]//a[contains(@class,'add-to-basket')]");
+        
+    //Refinement filters
+    private static final By REFINE_RESULTS_BUTTON = By.xpath("//*[contains(button,'Refine results')]");
     private static final By PRICE_RANGE_REFINEMENT_FILTER = By.xpath("//*[@id='filterPrice']");
     private static final By AVAILABILITY_REFINEMENT_FILTER = By.xpath("//*[@id='filterAvailability']");
     private static final By LANGUAGE_REFINEMENT_FILTER = By.xpath("//*[@id='filterLang']");
     private static final By FORMAT_REFINEMENT_FILTER = By.xpath("//*[@id='filterFormat']");
-    private static final String PRICE_RANGE = "Price Range";
+    
+    //Keys for Map refinement filters
+    private static final String PRICE_RANGE = "Price range";
     private static final String AVAILABILITY = "Availability";
     private static final String LANGUAGE = "Language";
     private static final String FORMAT = "Format";
@@ -30,8 +42,8 @@ public class SearchResultPage extends AbstractFragment {
         return SEARCH_RESULT_PAGE_URL;
     }
        
-    public List<String> findBookTitlesByXpath(){
-        return findElements(BOOK_TITLE).stream().map(WebElement::getText).collect(Collectors.toList()); 
+    public List<String> findBookTitlesByXpath() {
+        return findElements(BOOK_TITLE).stream().map(WebElement::getText).collect(Collectors.toList());
     }
         
     public boolean isBooksArePresentOnTheSearchResultPage(List<String> expectedBookTitles, List<String> actualBookTitles){
@@ -46,9 +58,11 @@ public class SearchResultPage extends AbstractFragment {
     }
 
     public boolean areOnlyExpectedBookTitlesDisplayedOnTheSearchResultPage(List<String> expectedBookTitles, List<String> actualBookTitles){
-        Collections.sort(expectedBookTitles);
-        Collections.sort(actualBookTitles);
-        return expectedBookTitles.equals(actualBookTitles);
+        return actualBookTitles.containsAll(expectedBookTitles);
+    }
+
+    public void clickOnTheRefineResultsButton(){
+        findElement(REFINE_RESULTS_BUTTON).click();
     }
     
     
@@ -73,5 +87,10 @@ public class SearchResultPage extends AbstractFragment {
         setAvailabilityRefinementFilter(refinementFilters.get(AVAILABILITY));
         setLanguageRefinementFilter(refinementFilters.get(LANGUAGE));
         setFormateRefinementFilter(refinementFilters.get(FORMAT));
+        clickOnTheRefineResultsButton();
+    }
+
+    public void clickOnTheAddToBasketButtonBelowTheThinkingInJava(){
+        findElement(ADD_TO_BASKET_BELOW_THINKING_IN_JAVA_BUTTON).click();
     }
 }
