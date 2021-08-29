@@ -13,10 +13,11 @@ Feature: Desktop Checkout for Guest User
       | Thinking Java Part I   |
       | Core Java Professional |
     And I apply the following search filters
-      | Price range  | 30 € +        |
-      | Availability | In Stock (6)  |
-      | Language     | English (16)   |
-      | Format       | Paperback (21) |
+      | Currency selector| € EUR          |
+      | Price range      | 30 € +         |
+      | Availability     | In Stock (5)   |
+      | Language         | English (16)   |
+      | Format           | Paperback (21) |
     Then Search results contain only the following products
       | Thinking in Java                                                      |
       | Think Java                                                            |
@@ -27,7 +28,7 @@ Feature: Desktop Checkout for Guest User
     Then I am redirected to the Basket page
     And Basket order summary is as following:
       | Delivery cost | Total   |
-      | FREE          | 84,29 € |
+      | FREE          | 84,25 € |
     When I click Checkout button on Basket page
     Then I am redirected to the Checkout page
     When I click Continue to payment button
@@ -44,7 +45,7 @@ Feature: Desktop Checkout for Guest User
       |Please enter your CVV |
     And Checkout order summary is as following:
       | Sub-total | Delivery | VAT    | Total   |
-      | 84,29 €   | FREE     | 0,00 € | 84,29 € |
+      | 84,25 €   | FREE     | 0,00 € | 84,25 € |
     And I checkout as a new customer with email "test@user.com"
     When I fill delivery address information manually:
       | Full name | Delivery country | Address line 1   | Address line 2   | Town/City | County/State | Postcode |

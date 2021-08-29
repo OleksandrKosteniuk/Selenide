@@ -2,12 +2,11 @@ package driver;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import static driver.CapabilitiesHelper.getChromeOptions;
 
 
 public class DriverManager {
@@ -23,17 +22,32 @@ public class DriverManager {
 
     static {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.gecko.driver", "src/main/resources/geckodriver.exe");
     }
-    
+
     public static void setupDriver() {
     }
 
     public static WebDriver getDriver() {
+        String browser = System.getProperty("browser");
         if (instance == null) {
-            instance = new ChromeDriver(getChromeOptions());
-            instance.manage().window().maximize();
-            instance.manage().timeouts().implicitlyWait(IMPLICITLY_WAIT_TIMEOUT, TimeUnit.SECONDS);
-            instance.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
+            switch (browser) {
+                case "chrome":
+                    instance = new ChromeDriver();
+                    instance.manage().window().maximize();
+                    instance.manage().timeouts().implicitlyWait(IMPLICITLY_WAIT_TIMEOUT, TimeUnit.SECONDS);
+                    instance.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
+                    return instance;
+                case "firefox":
+                    instance = new FirefoxDriver();
+                    instance.manage().window().maximize();
+                    instance.manage().timeouts().implicitlyWait(IMPLICITLY_WAIT_TIMEOUT, TimeUnit.SECONDS);
+                    instance.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
+                    return instance;
+                default:
+                    throw new IllegalStateException("This driver is not supported");
+
+            }
         }
         return instance;
     }
@@ -44,8 +58,8 @@ public class DriverManager {
             webDriverThreadLocal.remove();
         });
     }
-    
-    
-   WebDriverWait wait = new WebDriverWait(getDriver(),EXPLICITLY_WAIT_TIMEOUT);
-    
+
+
+    WebDriverWait wait = new WebDriverWait(getDriver(), EXPLICITLY_WAIT_TIMEOUT);
+
 }

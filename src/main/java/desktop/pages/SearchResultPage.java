@@ -32,7 +32,11 @@ public class SearchResultPage extends AbstractFragment {
     private static final By LANGUAGE_REFINEMENT_FILTER = By.xpath("//*[@id='filterLang']");
     private static final By FORMAT_REFINEMENT_FILTER = By.xpath("//*[@id='filterFormat']");
     
+    //Currency Selector
+    private static final By CURRENCY_SELECTOR_FILTER = By.xpath("//div[contains(@class,'secondary-header')]//select[contains(@id,'selectCurrency')]");
+    
     //Keys for Map refinement filters
+    private static final String CURRENCY_SELECTOR = "Currency selector";
     private static final String PRICE_RANGE = "Price range";
     private static final String AVAILABILITY = "Availability";
     private static final String LANGUAGE = "Language";
@@ -65,6 +69,9 @@ public class SearchResultPage extends AbstractFragment {
         findElement(REFINE_RESULTS_BUTTON).click();
     }
     
+    public void setCurrencySelector(String currencySelector){
+        selectByVisibleText(CURRENCY_SELECTOR_FILTER,currencySelector);
+    }
     
     public void setPriceRefinementFilter (String priceRefinementFilter){
         selectByVisibleText(PRICE_RANGE_REFINEMENT_FILTER,priceRefinementFilter);
@@ -83,6 +90,7 @@ public class SearchResultPage extends AbstractFragment {
     }
 
     public void selectRefinementFilters (Map<String, String> refinementFilters){
+        setCurrencySelector(refinementFilters.get(CURRENCY_SELECTOR));
         setPriceRefinementFilter(refinementFilters.get(PRICE_RANGE));
         setAvailabilityRefinementFilter(refinementFilters.get(AVAILABILITY));
         setLanguageRefinementFilter(refinementFilters.get(LANGUAGE));

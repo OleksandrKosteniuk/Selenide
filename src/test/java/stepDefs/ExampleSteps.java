@@ -1,5 +1,6 @@
 package stepDefs;
 
+import io.cucumber.java.BeforeStep;
 import abstractClasses.page.AbstractPage;
 import desktop.fragments.BasketPopUp;
 import desktop.fragments.GlobalHeader;
@@ -193,7 +194,7 @@ public class ExampleSteps extends AbstractPage {
         checkoutPageForGuest.fillInDeliveryAddressInformation(deliveryAddressInformation);
     }
 
-    @Then("there is no validation error messages displayed on Delivery Address form")
+    @When("there is no validation error messages displayed on Delivery Address form")
     public void areValidationErrorMessagesDisplayedOnDeliveryAddressForm() {
         assertThat(checkoutPageForGuest.getEmailAddressActualErrorMessage().isEmpty())
                 .overridingErrorMessage("Email Address error message is displayed")
