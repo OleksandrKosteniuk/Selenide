@@ -4,7 +4,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 
 public class DriverHooks {
-    @Before
+   /* @Before
     public void setupDriver(){
         DriverManager.setupDriver();
     }
@@ -12,5 +12,5 @@ public class DriverHooks {
     @After
     public void quitDriver(){
         DriverManager.quitDriver();
-    }
+    }*/
 }
