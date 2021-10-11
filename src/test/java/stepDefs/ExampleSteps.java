@@ -1,5 +1,10 @@
 package stepDefs;
 
+import com.codeborne.selenide.junit.ScreenShooter;
+import com.codeborne.selenide.junit5.ScreenShooterExtension;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import com.codeborne.selenide.testng.annotations.Report;
+import io.cucumber.java.After;
 import io.cucumber.java.BeforeStep;
 import abstractClasses.page.AbstractPage;
 import desktop.fragments.BasketPopUp;
@@ -9,16 +14,27 @@ import desktop.pages.HomePage;
 import desktop.pages.SearchResultPage;
 import desktop.pages.BasketPage;
 import driver.DriverManager;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.Transpose;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExampleSteps extends AbstractPage {
@@ -33,16 +49,32 @@ public class ExampleSteps extends AbstractPage {
     private BasketPage basketPage = new BasketPage();
     private CheckoutForGuestPage checkoutPageForGuest = new CheckoutForGuestPage();
 
+    /*
+    @RegisterExtension
+    public static ScreenShooterExtension screenShooterExtension = new ScreenShooterExtension().to("target/selenide");
+    */
+    
+    @After
+    public void getScreenshot(Scenario scenario) throws IOException{
+        Date currentDate = new Date();
+        String screenshotFileName = currentDate.toString().replace(" ", "-").replace(":", "-");
+        File screenshotFile = ((TakesScreenshot) getWebDriver()).getScreenshotAs(OutputType.FILE);
+
+        if (scenario.isFailed()){
+            FileUtils.copyFile(screenshotFile,new File(".//screenshot//"+screenshotFileName+".png"));
+        }
+    }
+    
     @Given("I am an anonymous customer with clear cookies")
     public void cleanCookiesInTheBrowser() {
-        DriverManager.getDriver().manage().deleteAllCookies();
+        open();
+        getWebDriver().manage().deleteAllCookies();
     }
     
     @When("I open the Home page")
     public void openHomePage() {
         homePage.openWebsiteUrl(homePage.getPageUrl());
-        wait.until(ExpectedConditions.urlContains(homePage.getPageUrl()));
-        assertThat(DriverManager.getDriver().getCurrentUrl().contains(homePage.getPageUrl()))
+        assertThat(getWebDriver().getCurrentUrl().contains(homePage.getPageUrl()))
                 .overridingErrorMessage("Home page is not opened")
                 .isTrue();
     }
@@ -55,8 +87,7 @@ public class ExampleSteps extends AbstractPage {
 
     @When("I am redirected to a Search Result page")
     public void userIsRedirectedToSearchResultPage() {
-        wait.until(ExpectedConditions.urlContains(searchResultPage.getPageUrl()));
-        assertThat(DriverManager.getDriver().getCurrentUrl().contains(searchResultPage.getPageUrl()))
+        assertThat(getWebDriver().getCurrentUrl().contains(searchResultPage.getPageUrl()))
                 .overridingErrorMessage("User is not redirected to the Search Result page")
                 .isTrue();
     }
@@ -92,8 +123,7 @@ public class ExampleSteps extends AbstractPage {
 
     @When("I am redirected to the Basket page")
     public void userIsRedirectedToBasketPage() {
-        wait.until(ExpectedConditions.urlContains(basketPage.getPageUrl()));
-        assertThat(DriverManager.getDriver().getCurrentUrl().contains(basketPage.getPageUrl()))
+        assertThat(getWebDriver().getCurrentUrl().contains(basketPage.getPageUrl()))
                 .overridingErrorMessage("User is not redirected to the Basket page")
                 .isTrue();
     }
@@ -116,8 +146,7 @@ public class ExampleSteps extends AbstractPage {
 
     @When("I am redirected to the Checkout page")
     public void userIsRedirectedToTheCheckoutPage() {
-        wait.until(ExpectedConditions.urlContains(checkoutPageForGuest.getPageUrl()));
-        assertThat(DriverManager.getDriver().getCurrentUrl().contains(checkoutPageForGuest.getPageUrl()))
+        assertThat(getWebDriver().getCurrentUrl().contains(checkoutPageForGuest.getPageUrl()))
                 .overridingErrorMessage("User is not redirected to the Checkout for Guest page")
                 .isTrue();
     }

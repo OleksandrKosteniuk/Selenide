@@ -1,5 +1,9 @@
 package abstractClasses.fragment;
 
+import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import driver.DriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -7,8 +11,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import utils.WebDriverWaiter;
 
-import java.util.List;
-
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.*;
 import static driver.DriverManager.getDriver;
 
 public abstract class AbstractFragment extends WebDriverWaiter {
@@ -28,7 +32,7 @@ public abstract class AbstractFragment extends WebDriverWaiter {
     }
     
     private Select newSelect (By by){
-        return new Select(DriverManager.getDriver().findElement(by));
+        return new Select(findElement(by));
     } 
     
     protected void selectByVisibleText(By by, String text){
@@ -36,12 +40,19 @@ public abstract class AbstractFragment extends WebDriverWaiter {
     }
 
     protected WebElement findElement(By by){
-        return DriverManager.getDriver().findElement(by);
+        return $(by).shouldBe(exist);
     }
 
-    protected List<WebElement> findElements(By by){
-        return DriverManager.getDriver().findElements(by);
+    protected ElementsCollection findElements(By by){
+        return $$(by).shouldBe(CollectionCondition.sizeGreaterThan(0));
     }
-    
+
+    protected void waitAndClickOnElement(By by){
+        $(by).click();
+    }
+
+    protected SelenideElement waitVisibility(By by){
+        return $(by).shouldBe(visible);
+    }
     
 }

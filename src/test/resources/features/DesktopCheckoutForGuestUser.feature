@@ -15,7 +15,7 @@ Feature: Desktop Checkout for Guest User
     And I apply the following search filters
       | Currency selector| € EUR          |
       | Price range      | 30 € +         |
-      | Availability     | In Stock (5)   |
+      | Availability     | In Stock (6)   |
       | Language         | English (16)   |
       | Format           | Paperback (21) |
     Then Search results contain only the following products
@@ -28,7 +28,7 @@ Feature: Desktop Checkout for Guest User
     Then I am redirected to the Basket page
     And Basket order summary is as following:
       | Delivery cost | Total   |
-      | FREE          | 84,25 € |
+      | FREE          | 90,00 € |
     When I click Checkout button on Basket page
     Then I am redirected to the Checkout page
     When I click Continue to payment button
